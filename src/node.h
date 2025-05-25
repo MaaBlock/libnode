@@ -384,6 +384,7 @@ enum OptionEnvvarSettings {
 // errors.
 // Otherwise all the options that are disallowed (and those are allowed) to be
 // set via environment variable are processed.
+//把args解析成args和exec_args
 NODE_EXTERN int ProcessGlobalArgs(std::vector<std::string>* args,
                       std::vector<std::string>* exec_args,
                       std::vector<std::string>* errors,
@@ -775,6 +776,7 @@ using EmbedderPreloadCallback =
 // imports internal modules with the internal require function.
 // Worker threads created in the environment will also respect The |preload|
 // function, so make sure the function is thread-safe.
+//  todo:研究下这个怎么把它转换成调用函数的
 NODE_EXTERN v8::MaybeLocal<v8::Value> LoadEnvironment(
     Environment* env,
     StartExecutionCallback cb,
@@ -893,7 +895,12 @@ NODE_EXTERN struct uv_loop_s* GetCurrentEventLoop(v8::Isolate* isolate);
 // 6. Call EmitProcessExit() and forward the return value.
 // If at any point node::Stop() is called, the function will attempt to return
 // as soon as possible, returning an empty `Maybe`.
-// This function only works if `env` has an associated `MultiIsolatePlatform`.
+// This function only works if `env` has an associated `MultiIsolatePlatform`
+
+/*
+ * 理解为
+ * while(hasEvent()){ runEvent(); }吗
+ */
 NODE_EXTERN v8::Maybe<int> SpinEventLoop(Environment* env);
 
 NODE_EXTERN std::string GetAnonymousMainPath();
@@ -1039,6 +1046,8 @@ NODE_DEPRECATED("Use v8::Date::ValueOf() directly",
 })
 #define NODE_V8_UNIXTIME node::NODE_V8_UNIXTIME
 
+
+//todo:研究下怎么定义const
 #define NODE_DEFINE_CONSTANT(target, constant)                                 \
   do {                                                                         \
     v8::Isolate* isolate = target->GetIsolate();                               \
