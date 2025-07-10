@@ -18,6 +18,9 @@ endif()
 set(V8_INCLUDE_DIR "${NODE_ROOT}/deps/v8/include")
 set(UV_INCLUDE_DIR "${NODE_ROOT}/deps/uv/include")
 
+set(V8_INCLUDE_DIR ${V8_INCLUDE_DIR} PARENT_SCOPE)
+set(UV_INCLUDE_DIR ${UV_INCLUDE_DIR} PARENT_SCOPE)
+
 add_library(nodejs_deps INTERFACE)
 
 target_include_directories(nodejs_deps INTERFACE
